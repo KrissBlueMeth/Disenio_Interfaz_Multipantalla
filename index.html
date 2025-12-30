@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            transition: background 0.3s; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+        }
+        .card { 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        }
+        /* APLICACIÓN LEY DE FITTS: 
+           Hacemos el botón grande (padding alto) y de ancho completo para que el 
+           objetivo sea fácil de clicar por el usuario. */
+        .btn-lg-custom { 
+            padding: 15px; 
+            font-size: 1.25rem; 
+            width: 100%; 
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h1 class="h3 mb-4 text-center">CONFIGURACION DE ENTORNO</h1>
+                
+                <form id="formulario">
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold" for="nombreUsu">NOMBRE</label>
+                        <input type="text" class="form-control" id="nombreUsu" required placeholder="Nombre completo">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="modoSelec">MODO</label>
+                        <select id="modoSelec" class="form-select">
+                            <option value="light">Claro (Predet.)</option>
+                            <option value="dark">Oscuro</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" for="fuente">Tamaño de Fuente</label>
+                        <select id="fuente" class="form-select">
+                            <option value="16">Normal (16px)</option>
+                            <option value="25">Grande (25px)</option>
+                            <option value="35">Extra Grande (35px)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg-custom">
+                        GUARDAR Y APLICAR
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Escuchamos el evento 'submit' para procesar los datos antes de cambiar de pagina
+    document.getElementById('formulario').addEventListener('submit', function(e) {
+        e.preventDefault(); // Evitamos que la página se recargue por defecto
+
+        // EMPAQUETADO DE DATOS: Creamos un objeto con las preferencias del usuario
+        const config = {
+            nombre: document.getElementById('nombreUsu').value,
+            modo: document.getElementById('modoSelec').value,
+            fuenteS: document.getElementById('fuente').value
+        };
+
+        /* PERSISTENCIA: Guardamos el objeto en LocalStorage convirtiéndolo a cadena JSON.
+         Esto permite que aunque el usuario cierre el navegador, sus datos sigan ahí.*/
+        localStorage.setItem('formulario', JSON.stringify(config));
+
+        /* FEEDBACK: Activamos una marca en sessionStorage para que la siguiente pantalla 
+         sepa que debe mostrar la animación de carga (Visibilidad del Sistema).*/
+        sessionStorage.setItem('enCarga', 'true');
+
+        // NAVEGACIÓN: Redirección a la segunda pantalla
+        window.location.href = 'bienvenida.html';
+    });
+</script>
+
+</body>
+</html>
